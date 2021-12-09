@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
+// https://www.twilio.com/blog/audio-visualisation-web-audio-api--react
 function App() {
+  const [audio, setAudio] = useState(null);
+
+  const getMicrophone = async () => {
+    const audio = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false
+    });
+    setAudio(audio);
+  }
+
+  const stopMicrophone = () => {
+    audio.getTracks().forEach(track => track.stop());
+    setAudio(null);
+  }
+
+  const toggleMicrophone = () => {
+    if (audio) {
+      stopMicrophone();
+    } else {
+      getMicrophone();
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="controls">
+        <button onClick={toggleMicrophone}>
+          {audio ? 'Stop microphone' : 'Get microphone input'}
+        </button>
+      </div>
     </div>
   );
 }
