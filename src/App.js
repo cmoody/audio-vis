@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css';
 
+import AudioAnalyser from './AudioAnalyser';
+
 // https://www.twilio.com/blog/audio-visualisation-web-audio-api--react
 function App() {
   const [audio, setAudio] = useState(null);
@@ -33,6 +35,7 @@ function App() {
           {audio ? 'Stop microphone' : 'Get microphone input'}
         </button>
       </div>
+      {audio ? <AudioAnalyser audio={audio} /> : ''}
     </div>
   );
 }
